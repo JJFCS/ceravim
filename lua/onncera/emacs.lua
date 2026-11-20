@@ -1,10 +1,15 @@
 
+-- TODO
+-- when in command mode then we exit with c-g , the command typed does not go away
+-- take inspiration from theprimeagen remaps
+
 -- emulating emacs keybinds into neovim MUAHAHAHA
 -- custom functions
 local function onncera_beg_of_buffer()
     -- moves the cursor to the absolute beg of the current buffer
     vim.api.nvim_win_set_cursor(0, { 1, 0 })
 end
+
 
 local function onncera_end_of_buffer()
     -- moves the cursor to the absolute end of the current buffer
@@ -13,6 +18,53 @@ local function onncera_end_of_buffer()
     local last_cols = #text  -- this gets the length of the string in bytes
 
     vim.api.nvim_win_set_cursor(0, { last_line, last_cols })
+end
+
+
+local function onncera_kill_line()
+    -- this kills to the end of the line or removes an empty line
+    if vim.fn.getline(".") == "" then
+        return "dd"
+    else
+        return "D"
+    end
+end
+
+
+local function onncera_kill_line_insert()
+    -- this kills to the end of the line or removes an empty line . this is for insert mode
+    if vim.fn.getline(".") == "" then
+        return "<C-\\><C-o>dd"
+    else
+        return "<C-\\><C-o>D"
+    end
+end
+
+
+local function onncera_yank()
+    -- accepts a completion suggestion or paste from the unnamed register
+    if vim.fn.pumvisible() == 1 then
+        return "<C-y>"
+    else
+        return '<C-r><C-o>"'
+    end
+end
+
+
+local function onncera_open_line()
+    -- open a new line at the cursor without moving to the new line. mode based features
+    local cursor = vim.api.nvim_win_get_cursor(0)  -- get the current cursor position
+    local line = cursor[1]
+    local cols = cursor[2]
+
+    -- insert a newline at the cursor position
+    vim.api.nvim_buf_set_text(0, line - 1, cols, line - 1, cols, { "", "" })
+
+    -- return the cursor to its original position
+    vim.api.nvim_win_set_cursor(0, { line, cols })
+
+    -- enter insert mode
+    vim.cmd("startinsert")
 end
 
 
@@ -41,7 +93,8 @@ vim.keymap.set("n", "<C-Space>", "v", { desc = "start a character selection" }) 
 vim.keymap.set("n", "<C-v>", "<C-f>", { desc = "next page" })
 vim.keymap.set("n", "<M-v>", "<C-b>", { desc = "prev page" })
 
-vim.keymap.set("n", "<C-l>", "zz",  { desc = "center current line" })
+vim.keymap.set("n", "<M-d>", "dw", { desc = "boom through the next word end" })
+vim.keymap.set("n", "<C-l>", "zz", { desc = "center current line" })
 vim.keymap.set("n", "<M-S-,>", onncera_beg_of_buffer, { desc = "beg of buffer" })
 vim.keymap.set("n", "<M-S-.>", onncera_end_of_buffer, { desc = "end of buffer" })
 
@@ -109,4 +162,54 @@ end, { expr = true, desc = "prev autocomplete suggestion or normal behavior" })
 
 
 -- cut , copy , paste , using vim registers. Visual P preserves the pasted register
+
+-- removing conflicting CTRL-W diagnostic mappings
+for _, key in ipairs({ "<C-w>d", "<C-w><C-d>" }) do
+	if vim.fn.maparg(key, "n") ~= "" then
+		vim.keymap.del("n", key)
+	end
+end
+
+vim.keymap.set("n", "<C-w>", "diw", { desc = "boom the word under the cursor" })
+vim.keymap.set("n", "<M-w>", "yiw", { desc = "copy the word under the cursor" })
+vim.keymap.set("n", "<C-d>", "x", { desc = "delete forwards a character" })
+vim.keymap.set("n", "<C-h>", "X", { desc = "delete backward a character" })
+vim.keymap.set("n", "<C-y>", "P", { desc = "paste before the cursor" })
+vim.keymap.set("n", "<C-k>", onncera_kill_line, { expr = true, desc = "cut to the end of the line" })
+
+vim.keymap.set("x", "<C-w>", "d", { desc = "boom selected text" })
+vim.keymap.set("x", "<M-w>", "y", { desc = "copy selected text" })
+vim.keymap.set("x", "<C-y>", "P", { desc = "replace selected text with the register" })
+
+vim.keymap.set("i", "<C-w>", "<C-w>", { desc = "delete backward a word" })
+vim.keymap.set("i", "<C-d>", "<C-\\><C-o>x", { desc = "delete forwards a character" })
+vim.keymap.set("i", "<C-h>", "<C-\\><C-o>X", { desc = "delete backward a character" })
+vim.keymap.set("i", "<M-d>", "<C-\\><C-o>de", { desc = "cut forward through a word end" })
+vim.keymap.set("i", "<M-Backspace>", "<C-w>", { desc = "delete backward a word" })
+
+vim.keymap.set("i", "<C-k>", onncera_kill_line_insert, { expr = true, desc = "kill line" })
+vim.keymap.set("i", "<C-y>", onncera_yank, { expr = true, desc = "accept suggestion or yank" })
+
+
+-- this is for inserting/opening a new line
+vim.keymap.set("i", "<C-o>", onncera_open_line, { desc = "Open line at cursor" })
+vim.keymap.set("n", "<C-o>", onncera_open_line, { desc = "Open line at cursor" })
+-- this is for visual mode .. first exits visual mode
+vim.keymap.set("x", "<C-o>", function()
+    vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
+    onncera_open_line()
+end, { desc = "Open line at selection end" })
+
+
+-- undo/redo. enter starts and undo block for the new line
+vim.keymap.set("n", "<C-/>", "<Esc>u", { desc = "undo" })
+vim.keymap.set("x", "<C-/>", "<Esc>u", { desc = "undo" })
+vim.keymap.set("n", "<C-S-/>", "<Esc><C-r>", { desc = "redo" })
+vim.keymap.set("x", "<C-S-/>", "<Esc><C-r>", { desc = "redo" })
+vim.keymap.set("i", "<C-/>", "<Esc>u", { desc = "undo and return to Normal" })
+vim.keymap.set("i", "<C-S-/>", "<Esc><C-r>", { desc = "redo and return to Normal" })
+vim.keymap.set("i", "<CR>", "<C-g>u<CR>", { desc = "newline and a new undo block" })  -- every time we return a new line , we create an undo checkpoint .. this gives us a more granular undo and not big chunks
+
+
+-- continue at finish a query replace as pattern/replacement/gc
 

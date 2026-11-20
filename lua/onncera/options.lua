@@ -2,20 +2,28 @@
 vim.g.mapleader = " "
 
 -- themes & transparency
-vim.cmd.colorscheme("wildcharm")  -- some other good ones : sorbet or wildcharm
+vim.cmd.colorscheme("catppuccin")  -- TODO .. find other themes - wildcharm (built in)
 
 -- basics settings
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true
 vim.opt.wrap = true  -- TODO .. how can we include a wrap character like in helix?
+vim.opt.showbreak = "‡ "
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 
--- indentation
+-- indentation & whitespaces
 vim.opt.tabstop = 4
-vim.opt.softtabstop = 4 ; vim.opt.expandtab = true ; vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4 ; vim.opt.expandtab = false ; vim.opt.shiftwidth = 4
 vim.opt.smartindent = true
+
+vim.g.python_recommended_style = 0  -- disable's PYTHON's indentation overrides
+
+vim.opt.list = true
+vim.opt.listchars = {
+	tab = "> "
+}
 
 -- search settings
 vim.opt.smartcase = true ; vim.opt.ignorecase = true
