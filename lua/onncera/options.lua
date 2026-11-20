@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 
 -- themes & transparency
-vim.cmd.colorscheme("wildcharm")  -- some other good ones : sorbet or habermax
+vim.cmd.colorscheme("wildcharm")  -- some other good ones : sorbet or wildcharm
 
 -- basics settings
 vim.opt.number = true
@@ -23,7 +23,7 @@ vim.opt.incsearch = true ; vim.opt.hlsearch = true
 
 -- visual settings
 vim.opt.termguicolors = true
-vim.opt.colorcolumn = 100 ; vim.opt.signcolumn = "yes"
+vim.opt.colorcolumn = "100" ; vim.opt.signcolumn = "yes"
 vim.opt.showmatch = true
 vim.opt.completeopt = "menuone,noinsert,noselect"
 
@@ -31,7 +31,7 @@ vim.opt.completeopt = "menuone,noinsert,noselect"
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.writebackup = false
-vim.opt.undofile = true ; vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"  -- TODO - is this auto created?
+vim.opt.undofile = true
 vim.opt.updatetime = 50
 
 -- behavior settings

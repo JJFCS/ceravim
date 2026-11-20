@@ -1,5 +1,20 @@
 
 -- emulating emacs keybinds into neovim MUAHAHAHA
+-- custom functions
+local function onncera_beg_of_buffer()
+    -- moves the cursor to the absolute beg of the current buffer
+    vim.api.nvim_win_set_cursor(0, { 1, 0 })
+end
+
+local function onncera_end_of_buffer()
+    -- moves the cursor to the absolute end of the current buffer
+    local last_line = vim.api.nvim_buf_line_count(0)
+    local text = vim.api.nvim_buf_get_lines(0, last_line - 1, last_line, false)[1]
+    local last_cols = #text  -- this gets the length of the string in bytes
+
+    vim.api.nvim_win_set_cursor(0, { last_line, last_cols })
+end
+
 
 vim.keymap.set("c", "<C-g>", "<Esc>", { desc = "EXIT command-line MODE"})
 vim.keymap.set("i", "<C-g>", "<Esc>", { desc = "EXIT insert MODE"})
@@ -27,8 +42,8 @@ vim.keymap.set("n", "<C-v>", "<C-f>", { desc = "next page" })
 vim.keymap.set("n", "<M-v>", "<C-b>", { desc = "prev page" })
 
 vim.keymap.set("n", "<C-l>", "zz",  { desc = "center current line" })
-vim.keymap.set("n", "<M-<>", "gg0", { desc = "beg of buffer" })
-vim.keymap.set("n", "<M->>", "G$",  { desc = "end of buffer" })
+vim.keymap.set("n", "<M-S-,>", onncera_beg_of_buffer, { desc = "beg of buffer" })
+vim.keymap.set("n", "<M-S-.>", onncera_end_of_buffer, { desc = "end of buffer" })
 
 
 -- visual mode
@@ -49,8 +64,8 @@ vim.keymap.set("x", "<C-v>", "<C-f>", { desc = "extend down a page" })
 vim.keymap.set("x", "<M-v>", "<C-b>", { desc = "extend up a page" })
 
 vim.keymap.set("x", "<C-l>", "zz",  { desc = "center the current line" })
-vim.keymap.set("x", "<M-<>", "gg0", { desc = "extend to the beginning of the buffer" })
-vim.keymap.set("x", "<M->>", "G$",  { desc = "extend to the end of the buffer" })
+vim.keymap.set("x", "<M-S-,>", onncera_beg_of_buffer, { desc = "extend to the beg of the buffer" })
+vim.keymap.set("x", "<M-S-.>", onncera_end_of_buffer, { desc = "extend to the end of the buffer" })
 
 
 -- insert mode
@@ -70,8 +85,8 @@ vim.keymap.set("i", "<C-v>", "<C-\\><C-o><C-f>", { desc = "next page" })
 vim.keymap.set("i", "<M-v>", "<C-\\><C-o><C-b>", { desc = "prev page" })
 
 vim.keymap.set("i", "<C-l>", "<C-\\><C-o>zz",  { desc = "center the current line" })
-vim.keymap.set("i", "<M-<>", "<C-\\><C-o>gg0", { desc = "beg of buffer" })
-vim.keymap.set("i", "<M->>", "<C-\\><C-o>G$",  { desc = "end of buffer" })
+vim.keymap.set("i", "<M-S-,>", onncera_beg_of_buffer, { desc = "beg of buffer" })
+vim.keymap.set("i", "<M-S-.>", onncera_end_of_buffer, { desc = "end of buffer" })
 
 -- how CTRL-N and CTRL-p behave when there is an autocomplete popup menu visible vs when there isn't
 -- move down or select next completion
