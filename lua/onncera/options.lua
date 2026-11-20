@@ -8,10 +8,13 @@ vim.cmd.colorscheme("catppuccin")  -- TODO .. find other themes - wildcharm (bui
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true
-vim.opt.wrap = true  -- TODO .. how can we include a wrap character like in helix?
+vim.opt.wrap = true
 vim.opt.showbreak = "‡ "
+vim.opt.linebreak = true
+vim.opt.breakindent = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
+vim.opt.selection = "exclusive"
 
 -- indentation & whitespaces
 vim.opt.tabstop = 4
