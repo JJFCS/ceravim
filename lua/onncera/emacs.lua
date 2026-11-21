@@ -1,11 +1,12 @@
 
+-- emulating emacs keybinds into neovim MUAHAHAHA
+
 -- TODO
 -- need to learn about theprimeagen remaps
 -- need to learn about grep etc and neovim cool commands etc
--- just want to use the system's clipboard for everything
+-- mc fixes .. CTRL-k , CTRL-o
 
 
--- emulating emacs keybinds into neovim MUAHAHAHA
 local clear_mc = '<Cmd>lua require("onncera.mc").clear()<CR>'
 
 -- custom functions
@@ -66,7 +67,7 @@ local function onncera_yank()
     if vim.fn.pumvisible() == 1 then
         return "<C-y>"
     else
-        return '<C-r><C-o>"'
+        return "<C-r><C-o>+"
     end
 end
 
@@ -100,7 +101,14 @@ local function onncera_reverse_search_cmd_line()
 end
 
 
-vim.keymap.set("i", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
+local function map_insert_mc(key, action)
+	local command = '<Cmd>lua require("onncera.mc").' .. action .. '()<CR>'
+	vim.keymap.set("i", key, "<Esc>" .. command .. "gi")
+end
+
+
+-- get me out!!!
+vim.keymap.set("i", "<C-g>", "<Esc>" .. clear_mc, { desc = "complete editing then clear cursors" })
 vim.keymap.set("n", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
 vim.keymap.set("o", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
 vim.keymap.set("v", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
@@ -150,14 +158,12 @@ vim.keymap.set("x", "<M-S-.>", onncera_end_of_buffer, { desc = "extend to the en
 
 
 -- insert mode
-vim.keymap.set("i", "<C-b>", "<C-\\><C-o>h", { desc = "go back a character" })
-vim.keymap.set("i", "<C-f>", "<C-\\><C-o>l", { desc = "go forward a character" })
-vim.keymap.set("i", "<C-a>", "<C-\\><C-o>0", { desc = "beg of line" })
-vim.keymap.set("i", "<C-e>", "<C-\\><C-o>$", { desc = "end of line" })
+vim.keymap.set("i", "<C-a>", "<Home>", { desc = "beg of line" }) ; vim.keymap.set("i", "<C-f>", "<Right>", { desc = "go forward a character" })
+vim.keymap.set("i", "<C-b>", "<Left>", { desc = "go back a character" }) ; vim.keymap.set("i", "<C-e>", "<End>", { desc = "end of line" })
 
--- <C-\\><C-o> lets us execute one normal mode command then return to insert mode
-vim.keymap.set("i", "<M-f>", "<C-\\><C-o>w", { desc = "forwards to a word end" })
-vim.keymap.set("i", "<M-b>", "<C-\\><C-o>b", { desc = "backward to a word start" })
+-- <C-\\><C-o> lets us execute one normal mode command then return to insert mode (TODO .. mc)
+vim.keymap.set("i", "<M-f>", "<C-Right>", { desc = "forwards to a word end" })
+vim.keymap.set("i", "<M-b>", "<C-Left>",  { desc = "backward to a word start" })
 
 vim.keymap.set("i", "<C-Space>", "<C-\\><C-o>v", { desc = "start a character selection" })
 vim.keymap.set("i", "<C-v>", "<C-\\><C-o><C-f>", { desc = "next page" })
@@ -173,7 +179,7 @@ vim.keymap.set("i", "<C-n>", function()
     if vim.fn.pumvisible() == 1 then
         return "<C-n>"
     else
-        return "<C-\\><C-o>gj"
+        return "<Down>"
     end
 end, { expr = true, desc = "next autocomplete suggestion or normal behavior" })
 
@@ -182,7 +188,7 @@ vim.keymap.set("i", "<C-p>", function()
     if vim.fn.pumvisible() == 1 then
         return "<C-p>"
     else
-        return "<C-\\><C-o>gk"
+        return "<Up>"
     end
 end, { expr = true, desc = "prev autocomplete suggestion or normal behavior" })
 
@@ -196,21 +202,22 @@ for _, key in ipairs({ "<C-w>d", "<C-w><C-d>" }) do
 	end
 end
 
+vim.keymap.set("n", "<C-y>", '"+P', { desc = "paste from system clipboard" })
+vim.keymap.set("x", "<C-y>", '"+P', { desc = "paste from system clipboard" })
+
 vim.keymap.set("n", "<C-w>", "diw", { desc = "boom the word under the cursor" })
 vim.keymap.set("n", "<M-w>", "yiw", { desc = "copy the word under the cursor" })
 vim.keymap.set("n", "<C-d>", "x", { desc = "delete forwards a character" })
 vim.keymap.set("n", "<C-h>", "X", { desc = "delete backward a character" })
-vim.keymap.set("n", "<C-y>", "P", { desc = "paste before the cursor" })
 vim.keymap.set("n", "<C-k>", onncera_kill_line, { expr = true, desc = "cut to the end of the line" })
 
 vim.keymap.set("x", "<C-w>", "d", { desc = "boom selected text" })
 vim.keymap.set("x", "<M-w>", "y", { desc = "copy selected text" })
-vim.keymap.set("x", "<C-y>", "P", { desc = "replace selected text with the register" })
 
 vim.keymap.set("i", "<C-w>", "<C-w>", { desc = "delete backward a word" })
-vim.keymap.set("i", "<C-d>", "<C-\\><C-o>x", { desc = "delete forwards a character" })
-vim.keymap.set("i", "<C-h>", "<C-\\><C-o>X", { desc = "delete backward a character" })
-vim.keymap.set("i", "<M-d>", "<C-\\><C-o>de", { desc = "cut forward through a word end" })
+vim.keymap.set("i", "<C-d>", "<Del>", { desc = "delete forwards a character" })
+vim.keymap.set("i", "<C-h>", "<Backspace>", { desc = "delete backward a character" })
+vim.keymap.set("i", "<M-d>", "<Esc>lce", { desc = "cut forward through a word end" })
 vim.keymap.set("i", "<M-Backspace>", "<C-w>", { desc = "delete backward a word" })
 
 vim.keymap.set("i", "<C-k>", onncera_kill_line_insert, { expr = true, desc = "kill line" })
@@ -228,12 +235,12 @@ end, { desc = "Open line at selection end" })
 
 
 -- undo/redo. enter starts and undo block for the new line
-vim.keymap.set("n", "<C-/>", "<Esc>u", { desc = "undo" })
-vim.keymap.set("x", "<C-/>", "<Esc>u", { desc = "undo" })
-vim.keymap.set("n", "<C-S-/>", "<Esc><C-r>", { desc = "redo" })
-vim.keymap.set("x", "<C-S-/>", "<Esc><C-r>", { desc = "redo" })
-vim.keymap.set("i", "<C-/>", "<Esc>u", { desc = "undo and return to Normal" })
-vim.keymap.set("i", "<C-S-/>", "<Esc><C-r>", { desc = "redo and return to Normal" })
+vim.keymap.set("n", "<C-/>", "<Cmd>undo<CR>", { desc = "undo" })
+vim.keymap.set("x", "<C-/>", "<Cmd>undo<CR>", { desc = "undo" })
+vim.keymap.set("i", "<C-/>", "<Esc><Cmd>undo<CR>i", { desc = "undo and resume Insert mode" })
+vim.keymap.set("n", "<C-S-/>", "<Cmd>redo<CR>", { desc = "redo" })
+vim.keymap.set("x", "<C-S-/>", "<Cmd>redo<CR>", { desc = "redo" })
+vim.keymap.set("i", "<C-S-/>", "<Esc><Cmd>redo<CR>i", { desc = "redo and resume Insert mode" })
 vim.keymap.set("i", "<CR>", "<C-g>u<CR>", { desc = "newline and a new undo block" })  -- every time we return a new line , we create an undo checkpoint .. this gives us a more granular undo and not big chunks
 
 
@@ -251,7 +258,7 @@ vim.keymap.set("i", "<C-r>", "<Esc>?", { desc = "search backward from Normal" })
 vim.keymap.set("n", "<M-x>", ":",      { desc = "run a command" })
 vim.keymap.set("x", "<M-x>", "<Esc>:", { desc = "run a command" })
 vim.keymap.set("i", "<M-x>", "<Esc>:", { desc = "run a command" })
-vim.keymap.set("c", "<C-y>", '<C-r>"', { desc = "paste the unnamed register" })
+vim.keymap.set("c", "<C-y>", "<C-r>+", { desc = "paste the unnamed register" })
 vim.keymap.set("c", "<C-k>", onncera_kill_cmd_line, { expr = true, desc = "delete to end cmd line" })
 vim.keymap.set("c", "<C-s>", "<C-g>", { desc = "visit the next incremental search match" })
 vim.keymap.set("c", "<C-r>", onncera_reverse_search_cmd_line, {
@@ -281,34 +288,40 @@ vim.keymap.set("x", "<F35>", mc.skip_previous, { desc = "skip to previous occurr
 vim.keymap.set("n", "<F36>", mc.skip_next, { desc = "skip to next occurrence or line" })
 vim.keymap.set("x", "<F36>", mc.skip_next, { desc = "skip to next occurrence or line" })
 
+map_insert_mc("<F33>", "mark_previous") -- Ctrl-F9
+map_insert_mc("<F34>", "mark_next")     -- Ctrl-F10
+map_insert_mc("<F35>", "skip_previous") -- Ctrl-F11
+map_insert_mc("<F36>", "skip_next")     -- Ctrl-F12
 
--- file , buffer , window , and selection commands
-vim.keymap.set({ "n", "x", "i" }, "<C-x>k", "<Cmd>confirm bdelete<CR>", { desc = "Close this buffer" })
-vim.keymap.set({ "n", "x", "i" }, "<C-x>0", "<Cmd>confirm close<CR>", { desc = "Close this window" })
-vim.keymap.set({ "n", "x", "i" }, "<C-x>1", "<Cmd>only<CR>", { desc = "Keep only this window" })
-vim.keymap.set({ "n", "x", "i" }, "<C-x>o", "<Cmd>wincmd w<CR>", { desc = "Focus the next window" })
-vim.keymap.set({ "n", "x", "i" }, "<C-x><Left>", "<Cmd>bprevious<CR>", { desc = "Previous buffer" })
-vim.keymap.set({ "n", "x", "i" }, "<C-x><Right>", "<Cmd>bnext<CR>", { desc = "Next buffer" })
-vim.keymap.set("n", "<C-x><C-f>", ":edit ", { desc = "Open a file" })
-vim.keymap.set("x", "<C-x><C-f>", "<Esc>:edit ", { desc = "Open a file" })
-vim.keymap.set("i", "<C-x><C-f>", "<Esc>:edit ", { desc = "Open a file" })
-vim.keymap.set("n", "<C-x>b", ":buffer ", { desc = "Choose a buffer with completion" })
-vim.keymap.set("x", "<C-x>b", "<Esc>:buffer ", { desc = "Choose a buffer with completion" })
-vim.keymap.set("i", "<C-x>b", "<Esc>:buffer ", { desc = "Choose a buffer with completion" })
-vim.keymap.set({ "n", "x", "i" }, "<C-x><C-b>", "<Cmd>buffers<CR>", { desc = "List buffers" })
-vim.keymap.set("n", "<C-x>h", "ggVG", { desc = "Select the buffer" })
-vim.keymap.set("x", "<C-x>h", "<Esc>ggVG", { desc = "Select the buffer" })
-vim.keymap.set("i", "<C-x>h", "<Esc>ggVG", { desc = "Select the buffer" })
-vim.keymap.set("x", "<C-x><C-x>", "o", { desc = "Exchange selection endpoints" })
-vim.keymap.set("n", "<C-x><C-x>", "gv", { desc = "Restore the last selection" })
+
+-- file , buffer , and window commands (perhaps include in the future) todo
+-- vim.keymap.set({ "n", "x", "i" }, "<C-x>k", "<Cmd>confirm bdelete<CR>", { desc = "Close this buffer" })
+-- vim.keymap.set({ "n", "x", "i" }, "<C-x>0", "<Cmd>confirm close<CR>", { desc = "Close this window" })
+-- vim.keymap.set({ "n", "x", "i" }, "<C-x>1", "<Cmd>only<CR>", { desc = "Keep only this window" })
+-- vim.keymap.set({ "n", "x", "i" }, "<C-x>o", "<Cmd>wincmd w<CR>", { desc = "Focus the next window" })
+-- vim.keymap.set("n", "<C-x><C-f>", ":edit ", { desc = "Open a file" })
+-- vim.keymap.set("x", "<C-x><C-f>", "<Esc>:edit ", { desc = "Open a file" })
+-- vim.keymap.set("i", "<C-x><C-f>", "<Esc>:edit ", { desc = "Open a file" })
+-- vim.keymap.set("n", "<C-x>b", ":buffer ", { desc = "Choose a buffer with completion" })
+-- vim.keymap.set("x", "<C-x>b", "<Esc>:buffer ", { desc = "Choose a buffer with completion" })
+-- vim.keymap.set("i", "<C-x>b", "<Esc>:buffer ", { desc = "Choose a buffer with completion" })
+-- vim.keymap.set({ "n", "x", "i" }, "<C-x><C-b>", "<Cmd>buffers<CR>", { desc = "List buffers" })
+
+
+-- case management
 vim.keymap.set("x", "<C-x><C-u>", "U", { desc = "Uppercase selected text" })
 vim.keymap.set("x", "<C-x><C-l>", "u", { desc = "Lowercase selected text" })
 vim.keymap.set("n", "<C-x><C-u>", "gUiw", { desc = "Uppercase the current word" })
 vim.keymap.set("n", "<C-x><C-l>", "guiw", { desc = "Lowercase the current word" })
-vim.keymap.set("n", "<M-u>", "gUe", { desc = "Uppercase through the word end" })
-vim.keymap.set("n", "<M-l>", "gue", { desc = "Lowercase through the word end" })
-vim.keymap.set("x", "<M-u>", "U", { desc = "Uppercase the selection" })
-vim.keymap.set("x", "<M-l>", "u", { desc = "Lowercase the selection" })
-vim.keymap.set("i", "<M-u>", "<C-\\><C-o>gUe<C-\\><C-o>e<Right>", { desc = "Uppercase through the word end" })
-vim.keymap.set("i", "<M-l>", "<C-\\><C-o>gue<C-\\><C-o>e<Right>", { desc = "Lowercase through the word end" })
+
+
+-- comments and reindents
+vim.keymap.set("n", "<C-M-\\>", "==",        { desc = "reindent the current line" })
+vim.keymap.set("x", "<C-M-\\>", "=",         { desc = "reindent selected lines" })
+vim.keymap.set("n", "<M-;>",    "gcc",       { remap = true, desc = "toggle the line comment" })
+vim.keymap.set("x", "<M-;>",    "gc",        { remap = true, desc = "toggle comments in the selection" })
+vim.keymap.set("i", "<M-;>",    "<Esc>gccA", { remap = true, desc = "toggle the line comment" })
+
+
+-- keyboard macros TODO
 

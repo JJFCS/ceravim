@@ -24,9 +24,7 @@ vim.opt.smartindent = true
 vim.g.python_recommended_style = 0  -- disable's PYTHON's indentation overrides
 
 vim.opt.list = true
-vim.opt.listchars = {
-	tab = "> "
-}
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- search settings
 vim.opt.smartcase = true ; vim.opt.ignorecase = true
@@ -35,7 +33,7 @@ vim.opt.incsearch = true ; vim.opt.hlsearch = false
 -- visual settings
 vim.opt.termguicolors = true
 vim.opt.colorcolumn = "100" ; vim.opt.signcolumn = "yes"
-vim.opt.showmatch = true
+vim.opt.showmatch = false
 vim.opt.completeopt = "menuone,noinsert,noselect"
 
 -- file handling
