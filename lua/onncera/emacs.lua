@@ -1,10 +1,13 @@
 
 -- TODO
--- when in command mode then we exit with c-g , the command typed does not go away
 -- need to learn about theprimeagen remaps
 -- need to learn about grep etc and neovim cool commands etc
+-- just want to use the system's clipboard for everything
+
 
 -- emulating emacs keybinds into neovim MUAHAHAHA
+local clear_mc = '<Cmd>lua require("onncera.mc").clear()<CR>'
+
 -- custom functions
 local function onncera_beg_of_buffer()
     -- moves the cursor to the absolute beg of the current buffer
@@ -97,12 +100,12 @@ local function onncera_reverse_search_cmd_line()
 end
 
 
-vim.keymap.set("c", "<C-g>", "<Esc>", { desc = "EXIT command-line MODE"})
-vim.keymap.set("i", "<C-g>", "<Esc>", { desc = "EXIT insert MODE"})
-vim.keymap.set("n", "<C-g>", "<Esc>", { desc = "EXIT normal MODE"})
-vim.keymap.set("o", "<C-g>", "<C-\\><C-n>", { desc = "EXIT operator-pending MODE"})
-vim.keymap.set("t", "<C-g>", "<C-\\><C-n>", { desc = "EXIT terminal MODE"})  -- this exits terminal mode
-vim.keymap.set("v", "<C-g>", "<Esc>", { desc = "EXIT visual MODE"})
+vim.keymap.set("i", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
+vim.keymap.set("n", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
+vim.keymap.set("o", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
+vim.keymap.set("v", "<C-g>", clear_mc .. "<Esc>", { desc = "clear cursors and exit to Normal" })
+vim.keymap.set("c", "<C-g>", clear_mc .. "<C-c>", { desc = "clear cursors and cancel command line" })
+vim.keymap.set("t", "<C-g>", clear_mc .. "<C-\\><C-n>", { desc = "clear cursors and exit Terminal mode" })
 
 
 -- normal mode
@@ -266,7 +269,20 @@ vim.keymap.set("i", "<C-Down>", "<C-\\><C-o>}", { desc = "forwards paragraph" })
 vim.keymap.set("i", "<C-Up>", "<C-\\><C-o>{", { desc = "backward paragraph" })
 
 
--- file , buffer , window , and selection commands .. TODO
+-- mc's
+local mc = require("onncera.mc")
+-- note F33 is equivalent to CTRL-F9 , F34 is CTRL-f10 , etc...
+vim.keymap.set("n", "<F33>", mc.mark_previous, { desc = "mark previous occurrence or line" })
+vim.keymap.set("x", "<F33>", mc.mark_previous, { desc = "mark previous occurrence or line" })
+vim.keymap.set("n", "<F34>", mc.mark_next, { desc = "mark next occurrence or line" })
+vim.keymap.set("x", "<F34>", mc.mark_next, { desc = "mark next occurrence or line" })
+vim.keymap.set("n", "<F35>", mc.skip_previous, { desc = "skip to previous occurrence or line" })
+vim.keymap.set("x", "<F35>", mc.skip_previous, { desc = "skip to previous occurrence or line" })
+vim.keymap.set("n", "<F36>", mc.skip_next, { desc = "skip to next occurrence or line" })
+vim.keymap.set("x", "<F36>", mc.skip_next, { desc = "skip to next occurrence or line" })
+
+
+-- file , buffer , window , and selection commands
 vim.keymap.set({ "n", "x", "i" }, "<C-x>k", "<Cmd>confirm bdelete<CR>", { desc = "Close this buffer" })
 vim.keymap.set({ "n", "x", "i" }, "<C-x>0", "<Cmd>confirm close<CR>", { desc = "Close this window" })
 vim.keymap.set({ "n", "x", "i" }, "<C-x>1", "<Cmd>only<CR>", { desc = "Keep only this window" })

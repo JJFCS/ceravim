@@ -30,7 +30,7 @@ vim.opt.listchars = {
 
 -- search settings
 vim.opt.smartcase = true ; vim.opt.ignorecase = true
-vim.opt.incsearch = true ; vim.opt.hlsearch = true
+vim.opt.incsearch = true ; vim.opt.hlsearch = false
 
 -- visual settings
 vim.opt.termguicolors = true
