@@ -319,7 +319,7 @@ vim.keymap.set("n", "<C-x><C-l>", "guiw", { desc = "Lowercase the current word" 
 vim.keymap.set("n", "<C-M-\\>", "==",        { desc = "reindent the current line" })
 vim.keymap.set("x", "<C-M-\\>", "=",         { desc = "reindent selected lines" })
 vim.keymap.set("n", "<M-;>",    "gcc",       { remap = true, desc = "toggle the line comment" })
-vim.keymap.set("x", "<M-;>",    "gc",        { remap = true, desc = "toggle comments in the selection" })
+vim.keymap.set("x", "<M-;>",    "gcc",       { remap = true, desc = "toggle comments in the selection" })
 vim.keymap.set("i", "<M-;>",    "<Esc>gccA", { remap = true, desc = "toggle the line comment" })
 
 
