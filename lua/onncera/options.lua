@@ -1,5 +1,6 @@
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- themes & transparency
 vim.cmd.colorscheme("catppuccin")  -- TODO .. find other themes - wildcharm (built in)
@@ -15,6 +16,9 @@ vim.opt.breakindent = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.selection = "exclusive"
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.inccommand = "split"  -- preview substitutions live as you type!
 
 -- indentation & whitespaces
 vim.opt.tabstop = 4
@@ -46,4 +50,9 @@ vim.opt.updatetime = 50
 -- behavior settings
 vim.opt.hidden = true
 vim.opt.clipboard:append("unnamedplus")  -- TODO .. this uses the system's clipboard. want?
+vim.opt.path:append("**")
+
+-- tabs
+vim.opt.showtabline = 2  -- (0 = never or 1 = when there are multiple tabs or 2 = always)
+vim.opt.tabline = ""  -- default tabline (empty string uses the default)
 
