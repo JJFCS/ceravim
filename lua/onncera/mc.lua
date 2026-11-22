@@ -1,4 +1,9 @@
 
+-- TODO
+-- mc fixes .. CTRL-k , CTRL-o .. insert mode is still weird (this line is all for insert mode)
+-- mc fixes .. bind follow mode to something easier
+-- think we just use normal and visual mode as those works out of the box . for insert mode we just use normal stuff but not emacs bindings
+
 -- Neovim 0.13 native multicursor mappings
 local api, fn = vim.api, vim.fn
 local namespace = api.nvim_create_namespace("nvim.multicursor")

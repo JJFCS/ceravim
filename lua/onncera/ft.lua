@@ -1,4 +1,6 @@
 
+-- TODO .. see TJ video on floating terminal and see if we want to implement that instead
+
 -- credits to .. https://github.com/radleylewis/nvim-lite
 -- floating terminal
 

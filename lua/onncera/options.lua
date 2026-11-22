@@ -1,4 +1,6 @@
 
+-- TODO .. NIL
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -16,13 +18,13 @@ vim.opt.breakindent = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.selection = "exclusive"
-vim.o.splitright = true
-vim.o.splitbelow = true
-vim.o.inccommand = "split"  -- preview substitutions live as you type!
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.inccommand = "split"  -- preview substitutions live as you type!
 
 -- indentation & whitespaces
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4 ; vim.opt.expandtab = false ; vim.opt.shiftwidth = 4
+vim.opt.tabstop = 8
+vim.opt.softtabstop = 8 ; vim.opt.expandtab = false ; vim.opt.shiftwidth = 8
 vim.opt.smartindent = true
 
 vim.g.python_recommended_style = 0  -- disable's PYTHON's indentation overrides
