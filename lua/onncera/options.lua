@@ -64,3 +64,6 @@ vim.opt.tabline = ""  -- default tabline (empty string uses the default)
 -- custom netrw
 require("onncera.netrw")
 
+-- gui nvim (neovide)
+require("onncera.neovide")
+

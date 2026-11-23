@@ -1,12 +1,13 @@
 
 --** some tips
+-- `enter' expands or shrinks
 -- `gn' to focus on a specific directories
 -- `i'  to cycle between different list styles
 --**
 
-vim.g.netrw_hide = 0 ; vim.g.netrw_liststyle = 3   -- shows hidden ; tree view . 'enter' expands or shrinks
-vim.g.netrw_banner = 0 ; vim.g.netrw_winsize = 20  -- hides help & status banner at the top ; 20% win width
-vim.g.netrw_bufsettings = "noma nomod nobl nowrap ro"
+vim.g.netrw_liststyle = 3 ; vim.g.netrw_hide = 0  -- tree view ; shows hidden
+vim.g.netrw_winsize = 20  -- 20% win width
+vim.g.netrw_bufsettings = "noma nomod nobl nowrap ro" ; vim.g.netrw_banner = 0  -- hides help & status banner at the top
 vim.g.netrw_sort_by = "name"
 vim.g.netrw_sort_direction = "normal"
 vim.g.netrw_sort_options = "i"
@@ -72,5 +73,16 @@ vim.api.nvim_create_autocmd("FileType", {
 			end
 		end
 	end),
+})
+
+-- can only use list style 3 which is the tree view . we lock you in MUAHAHA
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "netrw",
+	callback = function(event)
+		vim.keymap.set("n", "i", "<Nop>", {
+			buffer = event.buf,
+			desc = "disable netrw list style cycling",
+		})
+	end,
 })
 

@@ -50,17 +50,7 @@ function M.onncera_prev_line()
 end
 
 
-function M.onncera_open_file_in_tab()
-	-- open file in new tab
-	vim.ui.input({ prompt = 'File to open in new tab: ', completion = 'file' }, function(input)
-		if input and input ~= '' then
-			vim.cmd('tabnew ' .. input)
-		end
-	end)
-end
-
-
-function M.onncera_copy_file_path()
+function M.onncera_copy_filepath()
 	-- get the absolute file path of the current buffer and copy to the system clipboard
 	-- get the absolute path of the current file
 	local path = vim.fn.expand("%:p")
@@ -97,14 +87,6 @@ end
 function M.onncera_speedbar_toggle()
 	-- toggles between opening and closing the speedbar buffer
 	vim.cmd.Lexplore()
-end
-
-
-local api = vim.api
-local namespace = api.nvim_create_namespace("nvim.multicursor")
-function M.onncera_clear_mc()
-	-- clears the multicursors
-	api.nvim_buf_clear_namespace(0, namespace, 0, -1)
 end
 
 

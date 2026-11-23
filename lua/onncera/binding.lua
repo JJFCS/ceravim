@@ -1,6 +1,7 @@
 
 --** TODO
--- make sure the whole file and bindings are good . continue from file buffers section
+-- make sure the whole file and bindings are good
+-- modes arrangement would be better i believe
 --**
 
 
@@ -123,37 +124,28 @@ vim.keymap.set({ "n", "x" }, "<C-x>1", "<Cmd>only<CR>", { desc = "keep only this
 vim.keymap.set({ "n", "x" }, "<C-x>o", "<Cmd>wincmd w<CR>", { desc = "focus the next window" })
 
 
--- keyboard macros TODO
--- TODO .. CTRL-g should cancel the recording
-vim.keymap.set("n", "<C-x>(", "qq", { desc = "start recording a macro in register q" })
-vim.keymap.set("n", "<C-x>)", [[reg_recording() != '' ? 'q' : '']], { expr = true, desc = "stop recording the macro" })
-vim.keymap.set("n", "<C-x>e", "@q", { desc = "replay the macro in register q" })
+-- clear multicursor
+vim.keymap.set('n', '<C-q>', function()
+	vim.api.nvim_buf_clear_namespace(0, vim.api.nvim_create_namespace 'nvim.multicursor', 0, -1)
+end, { desc = 'clear multicursors' })
 
 
 -- non emacs binds
 -- ============================================================
-local clear_mc = '<Cmd>lua require("onncera.bespoke").onncera_clear_mc()<CR>'
-vim.keymap.set("n", "<leader>mc", clear_mc, { desc = "clear multicursors" })
-
 vim.keymap.set("n", "J", "mzJ`z")  -- join lines . taken from theprimeagen
 vim.keymap.set("n", "n", "nzzzv")  -- isearch but allows you to stay in the center of the screen
 vim.keymap.set("n", "N", "Nzzzv")
 
-vim.keymap.set('n', '<leader>tn', ":tabnew<CR>", { desc = 'new tab' })
-vim.keymap.set('n', '<leader>tx', ":tabclose<CR>", { desc = 'close tab' })
-vim.keymap.set('n', '<leader>to', f.onncera_open_file_in_tab, { desc = 'open file in new tab' })
-vim.keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "next buffer" })
-vim.keymap.set("n", "<leader>bp", ":bprevious<CR>", { desc = "prev buffer" })
-vim.keymap.set("n", "<leader>ff", ":find ", { desc = "find file" })
-vim.keymap.set("n", "<leader>fe", ":Explore<CR>", { desc = "open file explorer" })
-vim.keymap.set("n", "<leader>sb", f.onncera_speedbar_toggle, { desc = "open file side explorer" })
+vim.keymap.set("n", "<leader>bn", ":bnext<CR>")
+vim.keymap.set("n", "<leader>bp", ":bprevious<CR>")
+vim.keymap.set("n", "<leader>fp", f.onncera_copy_filepath)
+vim.keymap.set("n", "<leader>sb", f.onncera_speedbar_toggle)
 
 vim.keymap.set("v", "<", "<gv", { desc = "indent lefts and reselect" })
 vim.keymap.set("v", ">", ">gv", { desc = "indent right and reselect" })
 vim.keymap.set("n", "<leader><leader>", function()  -- sources the current file as a nvim config
 	vim.cmd("so")
 end)
-vim.keymap.set("n", "<leader>fp", f.onncera_copy_file_path, { desc = "copy absolute file path" })
 
 
 -- cancel unfinished emacs style command prefixes
