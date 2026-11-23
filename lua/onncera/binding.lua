@@ -36,7 +36,7 @@ vim.keymap.set("n", "<C-Space>", "v")  -- like setting a mark in emacs
 vim.keymap.set("n", "<C-v>", "<C-d>zz", { desc = "next page and recenter" })
 vim.keymap.set("n", "<M-v>", "<C-u>zz", { desc = "prev page and recenter" })
 
-vim.keymap.set("n", "<M-d>", "dw", { desc = "boom through the next word end" })
+vim.keymap.set("n", "<M-d>", "de", { desc = "boom through the next word end" })
 vim.keymap.set("n", "<C-l>", "zz", { desc = "center current line" })
 vim.keymap.set("n", "<M-S-,>", f.onncera_beg_of_buffer, { desc = "beg of buffer" })
 vim.keymap.set("n", "<M-S-.>", f.onncera_end_of_buffer, { desc = "end of buffer" })
@@ -79,17 +79,9 @@ vim.keymap.set("i", "<C-l>", "<C-\\><C-o>zz",  { desc = "center the current line
 
 vim.keymap.set("i", "<C-d>", "<Del>", { desc = "delete forwards a character" })
 vim.keymap.set("i", "<C-h>", "<Backspace>", { desc = "delete backward a character" })
-vim.keymap.set("i", "<M-d>", "<Esc>ce", { desc = "delete forwards through a word end" })
 
 
 -- cut , copy , paste
--- removing conflicting CTRL-W diagnostic mappings
-for _, key in ipairs({ "<C-w>d", "<C-w><C-d>" }) do
-	if vim.fn.maparg(key, "n") ~= "" then
-		vim.keymap.del("n", key)
-	end
-end
-
 vim.keymap.set("n", "<C-y>", '"+P', { desc = "paste from system clipboard" })
 vim.keymap.set("x", "<C-y>", '"+P', { desc = "paste from system clipboard" })
 vim.keymap.set("n", "<C-k>", f.onncera_kill_line, { expr = true, desc = "cut to the end of the line" })
@@ -116,8 +108,6 @@ vim.keymap.set("n", "<C-Down>", "}", { desc = "forwards paragraph" })
 vim.keymap.set("x", "<C-Down>", "}", { desc = "forwards paragraph" })
 vim.keymap.set("n", "<C-Up>", "{", { desc = "backward paragraph" })
 vim.keymap.set("x", "<C-Up>", "{", { desc = "backward paragraph" })
-vim.keymap.set("i", "<C-Down>", "<C-\\><C-o>}", { desc = "forwards paragraph" })
-vim.keymap.set("i", "<C-Up>", "<C-\\><C-o>{", { desc = "backward paragraph" })
 
 
 -- case management
@@ -127,18 +117,10 @@ vim.keymap.set("n", "<C-x><C-u>", "gUiw", { desc = "Uppercase the current word" 
 vim.keymap.set("n", "<C-x><C-l>", "guiw", { desc = "Lowercase the current word" })
 
 
--- file , buffer , and window commands (perhaps include in the future) todo
--- vim.keymap.set({ "n", "x", "i" }, "<C-x>k", "<Cmd>confirm bdelete<CR>", { desc = "Close this buffer" })
--- vim.keymap.set({ "n", "x", "i" }, "<C-x>0", "<Cmd>confirm close<CR>", { desc = "Close this window" })
--- vim.keymap.set({ "n", "x", "i" }, "<C-x>1", "<Cmd>only<CR>", { desc = "Keep only this window" })
--- vim.keymap.set({ "n", "x", "i" }, "<C-x>o", "<Cmd>wincmd w<CR>", { desc = "Focus the next window" })
--- vim.keymap.set("n", "<C-x><C-f>", ":edit ", { desc = "Open a file" })
--- vim.keymap.set("x", "<C-x><C-f>", "<Esc>:edit ", { desc = "Open a file" })
--- vim.keymap.set("i", "<C-x><C-f>", "<Esc>:edit ", { desc = "Open a file" })
--- vim.keymap.set("n", "<C-x>b", ":buffer ", { desc = "Choose a buffer with completion" })
--- vim.keymap.set("x", "<C-x>b", "<Esc>:buffer ", { desc = "Choose a buffer with completion" })
--- vim.keymap.set("i", "<C-x>b", "<Esc>:buffer ", { desc = "Choose a buffer with completion" })
--- vim.keymap.set({ "n", "x", "i" }, "<C-x><C-b>", "<Cmd>buffers<CR>", { desc = "List buffers" })
+-- window commands
+vim.keymap.set({ "n", "x" }, "<C-x>0", "<Cmd>confirm close<CR>", { desc = "close this window" })
+vim.keymap.set({ "n", "x" }, "<C-x>1", "<Cmd>only<CR>", { desc = "keep only this window" })
+vim.keymap.set({ "n", "x" }, "<C-x>o", "<Cmd>wincmd w<CR>", { desc = "focus the next window" })
 
 
 -- keyboard macros TODO
@@ -174,9 +156,19 @@ end)
 vim.keymap.set("n", "<leader>fp", f.onncera_copy_file_path, { desc = "copy absolute file path" })
 
 
--- TODO .. i think this is about quickfix list .. taken from theprimeagen
--- vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
--- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
--- vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
--- vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- cancel unfinished emacs style command prefixes
+local prefixes = {
+	"<C-x>",
+	"<leader>",
+	"<leader>b",
+	"<leader>f",
+	"<leader>s",
+	"<leader>t",
+}
+
+for _, prefix in ipairs(prefixes) do
+	vim.keymap.set({ "n", "x" }, prefix .. "<C-g>", "<Esc>", {
+		desc = "Cancel pending prefix"
+	})
+end
 
