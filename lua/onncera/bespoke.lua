@@ -1,5 +1,7 @@
 
--- TODO .. NIL
+--** TODO
+-- look through this super cool way of using FZF to look up api and documentation https://github.com/james-orcales/big_bang/blob/master/dotfiles/common/.config/nvim/init.lua
+--**
 
 local M = {}
 
@@ -25,67 +27,6 @@ function M.onncera_kill_line()
 	else
 		return "D"
 	end
-end
-
-
-function M.onncera_kill_cmd_line()
-	-- delete everything from the cursor to the end of the command line
-	-- get the current command line text and cursor position
-	local text = vim.fn.getcmdline()
-	local cols = vim.fn.getcmdpos()
-
-	-- keep only the text before the cursor
-	local remaining = text:sub(1, cols - 1)
-
-	-- replace the command line with the remaining text
-	vim.fn.setcmdline(remaining)
-
-	return ""
-end
-
-
-function M.onncera_yanks()
-	-- accepts a completion suggestion or paste from the unnamed register
-	if vim.fn.pumvisible() == 1 then
-		return "<C-y>"
-	else
-		return "<C-r><C-o>+"
-	end
-end
-
-
-function M.onncera_open_line()
-	-- open a new line at the cursor without moving to the new line. mode based features
-	local cursor = vim.api.nvim_win_get_cursor(0)  -- get the current cursor position
-	local line = cursor[1]
-	local cols = cursor[2]
-
-	-- insert a newline at the cursor position
-	vim.api.nvim_buf_set_text(0, line - 1, cols, line - 1, cols, { "", "" })
-
-	-- return the cursor to its original position
-	vim.api.nvim_win_set_cursor(0, { line, cols })
-
-	-- enter insert mode
-	vim.cmd("startinsert")
-end
-
-
-function M.onncera_reverse_search_cmd_line()
-	-- move to the previous search match or insert a register
-	local cmd_type = vim.fn.getcmdtype()  -- get the current command line type
-
-	if cmd_type == "/" or cmd_type == "?" then
-		return "<C-t>"
-	else
-		return "<C-r>"
-	end
-end
-
-
-function M.onncera_map_insert_mc(key, action)
-	local command = '<Cmd>lua require("onncera.mc").' .. action .. '()<CR>'
-	vim.keymap.set("i", key, "<Esc>" .. command .. "gi")
 end
 
 
@@ -123,7 +64,7 @@ function M.onncera_copy_file_path()
 	-- get the absolute file path of the current buffer and copy to the system clipboard
 	-- get the absolute path of the current file
 	local path = vim.fn.expand("%:p")
-	
+
 	vim.fn.setreg("+", path)  -- copy path to system clipboard
 	print("file:", path)
 end
@@ -150,6 +91,20 @@ function M.onncera_beg_of_line_insert()
 	else
 		return "<Home>"
 	end
+end
+
+
+function M.onncera_speedbar_toggle()
+	-- toggles between opening and closing the speedbar buffer
+	vim.cmd.Lexplore()
+end
+
+
+local api = vim.api
+local namespace = api.nvim_create_namespace("nvim.multicursor")
+function M.onncera_clear_mc()
+	-- clears the multicursors
+	api.nvim_buf_clear_namespace(0, namespace, 0, -1)
 end
 
 

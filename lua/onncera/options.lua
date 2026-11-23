@@ -1,5 +1,7 @@
 
--- TODO .. NIL
+--** TODO
+-- NIL
+--**
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -18,9 +20,6 @@ vim.opt.breakindent = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.selection = "exclusive"
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-vim.opt.inccommand = "split"  -- preview substitutions live as you type!
 
 -- indentation & whitespaces
 vim.opt.tabstop = 8
@@ -53,8 +52,15 @@ vim.opt.updatetime = 50
 vim.opt.hidden = true
 vim.opt.clipboard:append("unnamedplus")  -- TODO .. this uses the system's clipboard. want?
 vim.opt.path:append("**")
+vim.opt.isfname:append("@-@")
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.inccommand = "split"  -- preview substitutions live as you type!
 
 -- tabs
 vim.opt.showtabline = 2  -- (0 = never or 1 = when there are multiple tabs or 2 = always)
 vim.opt.tabline = ""  -- default tabline (empty string uses the default)
+
+-- custom netrw
+require("onncera.netrw")
 
