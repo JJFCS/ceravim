@@ -1,6 +1,6 @@
 
 --** TODO
--- NIL
+-- scale factor
 --**
 
 
@@ -9,6 +9,22 @@ if vim.g.neovide then
 	vim.o.guifont = "SF Mono:h16:w-1"  -- the `w' controls the width shrinking
 	vim.opt.linespace = -3
 
+	-- this makes neovide feel snappier like terminal neovim . removing animations
+	vim.g.neovide_cursor_animation_length = 0  -- controls how long cursor takes to animate from one position to another
+	vim.g.neovide_cursor_short_animation_length = 0  -- similar to above but for horizontal short movements (things like C-f and C-b)
+	vim.g.neovide_cursor_trail_size = 0  -- controls how much cursor stretches behind itself during movement
+	vim.g.neovide_cursor_animate_in_insert_mode = false
+	vim.g.neovide_cursor_animate_command_line = false
+	vim.g.neovide_cursor_vfx_mode = ""  -- controls additional visual effects when moving cursor . set to no effects
+	vim.g.neovide_position_animation_length = 0  -- controls animation of windows when changing position
+	vim.g.neovide_scroll_animation_length = 0  -- do not want smooth scrolling . this gives us instant scrolling
+	vim.g.neovide_scroll_animation_far_lines = 0  -- controls how many lines are animated when scrolling further than one screen . we jump directly to destination
+	vim.g.neovide_floating_shadow = true  -- shadows could help distinguish floating windows better
+	vim.g.neovide_floating_blur_amount_x = 0  -- controls the blur radius behind transparent floating windows
+	vim.g.neovide_floating_blur_amount_y = 0
+
+	vim.g.neovide_scale_factor = 1.0  -- is this like zooming in? play around more with this setting
+
 	-- how autocmd works
 	-- > `nvim_create_autocmd' tells neovim to perform an action when an event occurs
 	-- > `VimEnter' is the event that happens after neovim finishes starting up
@@ -16,24 +32,7 @@ if vim.g.neovide then
 	vim.api.nvim_create_autocmd("VimEnter", {
 		once = true,  -- the callback is only ran onced
 		callback = function()  -- callback is the lua code that needs to be executed
-			local f = require("onncera.bespoke")
-
-			-- neovide may report option+shift+,/. as meta+</>
-			-- support both representations including visual-mode selection
-			for _, key in ipairs({ "<M-<>", "<M-S-,>" }) do
-				vim.keymap.set({ "n", "x" }, key, f.onncera_beg_of_buffer, {
-					desc = "beginning of buffer",
-				})
-			end
-
-			for _, key in ipairs({ "<M->>", "<M-S-.>" }) do
-				vim.keymap.set({ "n", "x" }, key, f.onncera_end_of_buffer, {
-					desc = "end of buffer",
-				})
-			end
-
-			-- in Neovide Ctrl+Shift+/ can arrive as Ctrl+?
-			-- keep Ctrl+/ (undo) and the shared redo mappings intact
+			-- @bindings
 			vim.keymap.set("n", "<C-?>", "<Cmd>redo<CR>", { desc = "redo" })
 			vim.keymap.set("x", "<C-?>", "<Cmd>redo<CR>", { desc = "redo" })
 			vim.keymap.set("i", "<C-?>", "<Esc><Cmd>redo<CR>i", {

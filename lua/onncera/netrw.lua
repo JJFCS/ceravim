@@ -79,6 +79,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "netrw",
 	callback = function(event)
+		-- @bindings
 		vim.keymap.set("n", "i", "<Nop>", {
 			buffer = event.buf,
 			desc = "disable netrw list style cycling",

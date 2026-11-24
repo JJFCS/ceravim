@@ -1,7 +1,7 @@
 
 --** TODO
 -- make sure the whole file and bindings are good
--- modes arrangement would be better i believe
+-- modes arrangement would be better i believe . continue from cut copy paste section
 --**
 
 
@@ -10,76 +10,44 @@
 local f = require("onncera.bespoke")
 
 
--- this is going to get me cancelled
-vim.keymap.set("c", "<C-g>", "<C-c>")
-vim.keymap.set("i", "<C-g>", "<Esc>")
-vim.keymap.set("n", "<C-g>", "<Esc>")
-vim.keymap.set("o", "<C-g>", "<Esc>")
-vim.keymap.set("v", "<C-g>", "<Esc>")
-vim.keymap.set("t", "<C-g>", "<C-\\><C-n>")
+-- INSERT MODE
+vim.keymap.set("i", "<C-g>", "<C-o>")  -- use one normal mode command then puts us back into insert mode
+vim.keymap.set("i", "<C-l>", "<C-o>zz", { desc = "center the current line" })
+vim.keymap.set("i", "<C-a>", f.onncera_beg_of_line_insert, { expr = true, desc = "toggle beg of line" })
+vim.keymap.set("i", "<C-e>", "<End>")
+vim.keymap.set("i", "<C-c>", "<Esc>")
+vim.keymap.set("i", "<C-d>", "<Del>")
+-- how CTRL-N and CTRL-p behave when there is an autocomplete popup menu visible vs when there isn't
+vim.keymap.set("i", "<C-n>", "<Down>") ; vim.keymap.set("i", "<C-p>", "<up>")
+vim.keymap.set("i", "<C-b>", "<Left>") ; vim.keymap.set("i", "<C-f>", "<Right>")
+vim.keymap.set("i", "<M-f>", "<C-Right>") ; vim.keymap.set("i", "<M-b>", "<C-Left>")
 
 
--- normal mode
-vim.keymap.set("n", "<C-b>", "h")
-vim.keymap.set("n", "<C-n>", "j")
-vim.keymap.set("n", "<C-p>", "k")
-vim.keymap.set("n", "<C-f>", "l")
-vim.keymap.set("n", "<C-a>", f.onncera_beg_of_line, { expr = true, desc = "toggle beg of line" })
-vim.keymap.set("n", "<C-e>", "$")
-
-vim.keymap.set("n", "<C-d>", "x", { desc = "delete forwards a character" })
-vim.keymap.set("n", "<C-h>", "X", { desc = "delete backward a character" })
-
+-- NORMAL MODE
+vim.keymap.set("n", "<C-b>", "h") ; vim.keymap.set("n", "<C-n>", "j") ; vim.keymap.set("n", "<C-p>", "k") ; vim.keymap.set("n", "<C-f>", "l")
+vim.keymap.set("n", "<C-a>", f.onncera_beg_of_line, { expr = true, desc = "toggle beg of line" }) ; vim.keymap.set("n", "<C-e>", "$")
 vim.keymap.set("n", "<M-f>", "e")
 vim.keymap.set("n", "<M-b>", "b")
+vim.keymap.set("n", "<C-l>", "zz", { desc = "center current line" })
+vim.keymap.set("n", "<M-d>", "de", { desc = "boom through the next word end" })
+vim.keymap.set("n", "<C-d>", "x")
+vim.keymap.set("n", "<C-h>", "X")
 
 vim.keymap.set("n", "<C-Space>", "v")  -- like setting a mark in emacs
-vim.keymap.set("n", "<C-v>", "<C-d>zz", { desc = "next page and recenter" })
-vim.keymap.set("n", "<M-v>", "<C-u>zz", { desc = "prev page and recenter" })
-
-vim.keymap.set("n", "<M-d>", "de", { desc = "boom through the next word end" })
-vim.keymap.set("n", "<C-l>", "zz", { desc = "center current line" })
-vim.keymap.set("n", "<M-S-,>", f.onncera_beg_of_buffer, { desc = "beg of buffer" })
-vim.keymap.set("n", "<M-S-.>", f.onncera_end_of_buffer, { desc = "end of buffer" })
+vim.keymap.set("n", "<M-up>", "<C-u>zz", { desc = "prev page and recenter" }) ; vim.keymap.set("n", "<M-down>", "<C-d>zz", { desc = "next page and recenter" })
+vim.keymap.set("n", "<C-Up>", "{", { desc = "backward paragraph" }) ; vim.keymap.set("n", "<C-Down>", "}", { desc = "forwards paragraph" })
 
 
--- visual mode
-vim.keymap.set("x", "<C-b>", "h")
-vim.keymap.set("x", "<C-n>", "j")
-vim.keymap.set("x", "<C-p>", "k")
-vim.keymap.set("x", "<C-f>", "l")
-vim.keymap.set("x", "<C-a>", f.onncera_beg_of_line, { expr = true, desc = "toggle beg of line" })
-vim.keymap.set("x", "<C-e>", "$")
-
+-- VISUAL MODE
+vim.keymap.set("x", "<C-b>", "h") ; vim.keymap.set("x", "<C-n>", "j") ; vim.keymap.set("x", "<C-p>", "k") ; vim.keymap.set("x", "<C-f>", "l")
+vim.keymap.set("x", "<C-a>", f.onncera_beg_of_line, { expr = true, desc = "toggle beg of line" }) ; vim.keymap.set("x", "<C-e>", "$")
 vim.keymap.set("x", "<M-f>", "e")
 vim.keymap.set("x", "<M-b>", "b")
+vim.keymap.set("x", "<C-l>", "zz",  { desc = "center the current line" })
 
 vim.keymap.set("x", "<C-Space>", "<C-\\><C-n>", { desc = "end the selection" })
-vim.keymap.set("x", "<C-v>", "<C-f>", { desc = "extend down a page" })
-vim.keymap.set("x", "<M-v>", "<C-b>", { desc = "extend up a page" })
-
-vim.keymap.set("x", "<C-l>", "zz",  { desc = "center the current line" })
-vim.keymap.set("x", "<M-S-,>", f.onncera_beg_of_buffer, { desc = "extend to the beg of the buffer" })
-vim.keymap.set("x", "<M-S-.>", f.onncera_end_of_buffer, { desc = "extend to the end of the buffer" })
-
-vim.keymap.set("v", "<M-Down>", ":m '>+1<CR>gv=gv")  -- like emacs move text
-vim.keymap.set("v", "<M-Up>",   ":m '<-2<CR>gv=gv")  -- from theprimeagen
-
-
--- insert mode
-vim.keymap.set("i", "<C-a>", f.onncera_beg_of_line_insert, { expr = true, desc = "toggle beg of line" })
-vim.keymap.set("i", "<C-f>", "<Right>", { desc = "go forward a character" })
-vim.keymap.set("i", "<C-e>", "<End>", { desc = "end of line" }) ; vim.keymap.set("i", "<C-b>", "<Left>", { desc = "go back a character" })
-
--- how CTRL-N and CTRL-p behave when there is an autocomplete popup menu visible vs when there isn't
-vim.keymap.set("i", "<C-n>", f.onncera_next_line, { expr = true, desc = "next suggestion or line" })
-vim.keymap.set("i", "<C-p>", f.onncera_prev_line, { expr = true, desc = "prev suggestion or line" })
-
-vim.keymap.set("i", "<M-b>", "<C-Left>") ; vim.keymap.set("i", "<M-f>", "<C-Right>")
-vim.keymap.set("i", "<C-l>", "<C-\\><C-o>zz",  { desc = "center the current line" })
-
-vim.keymap.set("i", "<C-d>", "<Del>", { desc = "delete forwards a character" })
-vim.keymap.set("i", "<C-h>", "<Backspace>", { desc = "delete backward a character" })
+vim.keymap.set("x", "<M-up>", "<C-b>", { desc = "extend up a page" }) ; vim.keymap.set("x", "<M-down>",  "<C-f>", { desc = "extend down a page" })
+vim.keymap.set("x", "<C-Up>", "{", { desc = "backward paragraph" }) ; vim.keymap.set("x", "<C-Down>", "}", { desc = "forwards paragraph" })
 
 
 -- cut , copy , paste
@@ -89,7 +57,6 @@ vim.keymap.set("n", "<C-k>", f.onncera_kill_line, { expr = true, desc = "cut to 
 vim.keymap.set("x", "<C-w>", "d", { desc = "boom selected text" })
 vim.keymap.set("x", "<M-w>", "y", { desc = "copy selected text" })
 vim.keymap.set("i", "<C-o>", "<Esc>O", { desc = "open line at cursor" })
-vim.keymap.set("i", "<M-Backspace>", "<C-w>", { desc = "delete backward a word" })
 vim.keymap.set("n", "<M-Backspace>", "db", { desc = "delete backward a word" })
 vim.keymap.set("n", "<C-o>", "O<Esc>", { desc = "open line at cursor" })
 
@@ -102,20 +69,6 @@ vim.keymap.set("n", "<C-S-/>", "<Cmd>redo<CR>", { desc = "redo" })
 vim.keymap.set("x", "<C-S-/>", "<Cmd>redo<CR>", { desc = "redo" })
 vim.keymap.set("i", "<C-S-/>", "<Esc><Cmd>redo<CR>i", { desc = "redo and resume Insert mode" })
 vim.keymap.set("i", "<CR>", "<C-g>u<CR>", { desc = "newline and a new undo block" })  -- every time we return a new line , we create an undo checkpoint .. this gives us a more granular undo and not big chunks
-
-
--- i love this navigation keybinds
-vim.keymap.set("n", "<C-Down>", "}", { desc = "forwards paragraph" })
-vim.keymap.set("x", "<C-Down>", "}", { desc = "forwards paragraph" })
-vim.keymap.set("n", "<C-Up>", "{", { desc = "backward paragraph" })
-vim.keymap.set("x", "<C-Up>", "{", { desc = "backward paragraph" })
-
-
--- case management
-vim.keymap.set("x", "<C-x><C-u>", "U", { desc = "Uppercase selected text" })
-vim.keymap.set("x", "<C-x><C-l>", "u", { desc = "Lowercase selected text" })
-vim.keymap.set("n", "<C-x><C-u>", "gUiw", { desc = "Uppercase the current word" })
-vim.keymap.set("n", "<C-x><C-l>", "guiw", { desc = "Lowercase the current word" })
 
 
 -- window commands
@@ -147,20 +100,13 @@ vim.keymap.set("n", "<leader><leader>", function()  -- sources the current file 
 	vim.cmd("so")
 end)
 
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")  -- like emacs move text
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")  -- from theprimeagen
 
--- cancel unfinished emacs style command prefixes
-local prefixes = {
-	"<C-x>",
-	"<leader>",
-	"<leader>b",
-	"<leader>f",
-	"<leader>s",
-	"<leader>t",
-}
-
-for _, prefix in ipairs(prefixes) do
-	vim.keymap.set({ "n", "x" }, prefix .. "<C-g>", "<Esc>", {
-		desc = "Cancel pending prefix"
-	})
-end
+vim.keymap.set("n", "<leader>vv", "v",     { desc = "visual chars mode" })
+vim.keymap.set("x", "<leader>vv", "v",     { desc = "visual chars mode" })
+vim.keymap.set("n", "<leader>vl", "V",     { desc = "visual lines mode" })
+vim.keymap.set("x", "<leader>vl", "V",     { desc = "visual lines mode" })
+vim.keymap.set("n", "<leader>vb", "<C-v>", { desc = "visual block mode" })
+vim.keymap.set("x", "<leader>vb", "<C-v>", { desc = "visual block mode" })
 
