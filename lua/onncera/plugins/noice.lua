@@ -14,9 +14,13 @@ require("noice").setup({
 		},
 	},
 	messages = {
-		view = "split",
+		enabled = false,
 	},
 	-- you can enable a preset for easier configuration
+	cmdline = {
+		enabled = true,
+		view = "cmdline_popup",
+	},
 	presets = {
 		bottom_search = true, -- use a classic bottom cmdline for search
 		command_palette = true, -- position the cmdline and popupmenu together

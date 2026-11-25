@@ -23,7 +23,7 @@ if vim.g.neovide then
 	vim.g.neovide_floating_blur_amount_x = 0  -- controls the blur radius behind transparent floating windows
 	vim.g.neovide_floating_blur_amount_y = 0
 
-	vim.g.neovide_scale_factor = 1.0  -- is this like zooming in? play around more with this setting
+	vim.g.neovide_scale_factor = 1.0
 
 	-- how autocmd works
 	-- > `nvim_create_autocmd' tells neovim to perform an action when an event occurs
@@ -50,6 +50,11 @@ if vim.g.neovide then
 			end, { desc = "reset zoom" })
 		end,
 	})
-end
 
+	vim.cmd.colorscheme("catppuccin")
+
+else
+	require("onncera.plugins.theme")
+	vim.cmd.colorscheme("rose-pine")
+end
 

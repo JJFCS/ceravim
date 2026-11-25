@@ -1,4 +1,5 @@
 
+require("onncera.plugins.theme")
 require("onncera.options")
 require("onncera.plugins.ts")
 require("onncera.plugins.telescope")

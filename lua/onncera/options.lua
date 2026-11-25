@@ -8,7 +8,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- themes & transparency
-vim.cmd.colorscheme("catppuccin")
+-- vim.cmd.colorscheme("catppuccin")
 
 -- basics settings
 vim.opt.number = true ; vim.opt.relativenumber = true
@@ -18,6 +18,7 @@ vim.opt.showbreak = "‡ "
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.selection = "exclusive"
+vim.opt.guicursor = "a:block-blinkon0"
 
 -- indentation & whitespaces
 vim.opt.tabstop = 8
