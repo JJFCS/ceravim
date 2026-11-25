@@ -3,6 +3,7 @@
 -- NIL
 --**
 
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -52,7 +53,7 @@ vim.opt.isfname:append("@-@")
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.inccommand = "split"  -- preview substitutions live as you type!
-vim.opt.timeoutlen = 500
+vim.opt.timeoutlen = 1000
 
 -- tabs
 vim.opt.showtabline = 2  -- (0 = never or 1 = when there are multiple tabs or 2 = always)

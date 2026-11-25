@@ -45,10 +45,3 @@ vim.api.nvim_create_autocmd("FileType", {
 		end,
 	})
 
--- @bindings
-vim.keymap.set("n", "<leader>ts", function()
-	if vim.b.ts_highlight then vim.treesitter.stop(0)
-	elseif vim.treesitter.get_parser(0) then vim.treesitter.start(0)
-	end
-end, { desc = "toggle treesitter highlighting" })
-
