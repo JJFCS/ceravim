@@ -13,6 +13,9 @@ require("noice").setup({
 			["vim.lsp.util.stylize_markdown"] = true,
 		},
 	},
+	messages = {
+		view = "split",
+	},
 	-- you can enable a preset for easier configuration
 	presets = {
 		bottom_search = true, -- use a classic bottom cmdline for search
@@ -21,5 +24,12 @@ require("noice").setup({
 		inc_rename = false, -- enables an input dialog for inc-rename.nvim
 		lsp_doc_border = false, -- add a border to hover docs and signature help
 	},
+})
+
+vim.api.nvim_create_autocmd("InsertEnter", { desc = "dismiss noice plugin messages when editing resumes",
+	group = vim.api.nvim_create_augroup("onnceraDismissNoice", { clear = true }),
+	callback = function()
+		vim.cmd("Noice dismiss")
+	end,
 })
 

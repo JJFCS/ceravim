@@ -9,5 +9,6 @@ require("onncera.lsp")
 require("onncera.plugins.mason-lspconfig")
 require("onncera.plugins.undootree")
 require("onncera.plugins.noice")
+require("onncera.plugins.nvim-tree")
 require("onncera.binding")
 

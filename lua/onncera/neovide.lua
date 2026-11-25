@@ -38,6 +38,16 @@ if vim.g.neovide then
 			vim.keymap.set("i", "<C-?>", "<Esc><Cmd>redo<CR>i", {
 				desc = "redo and resume Insert mode",
 			})
+
+			vim.keymap.set("n", "<C-x><C-=>", function()
+				vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * 1.1
+			end, { desc = "zoom ins" })
+			vim.keymap.set("n", "<C-x><C-->", function()
+				vim.g.neovide_scale_factor = vim.g.neovide_scale_factor / 1.1
+			end, { desc = "zoom out" })
+			vim.keymap.set("n", "<C-=>", function()
+				vim.g.neovide_scale_factor = 1.0
+			end, { desc = "reset zoom" })
 		end,
 	})
 end

@@ -51,11 +51,5 @@ function M.onncera_beg_of_line_insert()
 end
 
 
-function M.onncera_speedbar_toggle()
-	-- toggles between opening and closing the speedbar buffer
-	vim.cmd.Lexplore()
-end
-
-
 return M
 

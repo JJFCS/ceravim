@@ -92,7 +92,6 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>")
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>")
 vim.keymap.set("n", "<leader>fp", f.onncera_copy_filepath)
-vim.keymap.set("n", "<leader>sb", f.onncera_speedbar_toggle)
 
 vim.keymap.set("v", "<", "<gv", { desc = "indent lefts and reselect" })
 vim.keymap.set("v", ">", ">gv", { desc = "indent right and reselect" })
