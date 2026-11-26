@@ -1,6 +1,6 @@
 
 --** TODO
--- look through this super cool way of using FZF to look up api and documentation https://github.com/james-orcales/big_bang/blob/master/dotfiles/common/.config/nvim/init.lua
+-- COOL USE OF FZF TO LOOK UP API & DOCUMENTATION ---> https://www.youtube.com/watch?v=FdQ5FZSGLK8&t=605s
 --**
 
 
@@ -17,19 +17,8 @@ function M.onncera_kill_line()
 end
 
 
-function M.onncera_copy_filepath()
-	-- get the absolute file path of the current buffer and copy to the system clipboard
-	-- get the absolute path of the current file
-	local path = vim.fn.expand("%:p")
-
-	vim.fn.setreg("+", path)  -- copy path to system clipboard
-	print("file:", path)
-end
-
-
 function M.onncera_beg_of_line()
 	-- toggle between the absolute beginning and first non whitespace character
-	-- check whether we're already at column zero
 	if vim.fn.col(".") == 1 then
 		return "^"
 	else
@@ -39,11 +28,12 @@ end
 
 
 function M.onncera_beg_of_line_insert()
-	-- toggle between the absolute beginning and first non whitespace character in insert mode
-	local col = vim.fn.col(".")
+	-- toggle between the absolute beginning and first non whitespace character
+	-- when in insert mode
+	local cols = vim.fn.col(".")
 	local line = vim.fn.getline(".")
 
-	if col == 1 and line:match("^%s+%S") then
+	if cols == 1 and line:match("^%s+%S") then
 		return "<C-Right>"
 	else
 		return "<Home>"

@@ -36,8 +36,8 @@ require("telescope").setup({
 	defaults = {
 		mappings = {
 			-- @bindings
-			i = { ["<C-c>"] = actions.close, ["<CR>"] = "select_vertical" },
-			n = { ["<C-c>"] = actions.close, ["<CR>"] = "select_vertical" },
+			i = { ["<C-c>"] = actions.close },
+			n = { ["<C-c>"] = actions.close },
 		},
 	},
 })

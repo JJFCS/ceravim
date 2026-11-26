@@ -51,10 +51,14 @@ if vim.g.neovide then
 		end,
 	})
 
-	vim.cmd.colorscheme("catppuccin")
-
+	require("rose-pine").setup({
+		styles = {
+			bold = false, italic = false,
+			transparency = true,  -- PUT 'false' IF TOO DISTRACTING IN NEOVIDE
+		},
+	})
+	vim.cmd.colorscheme("rose-pine")
 else
-	require("onncera.plugins.theme")
 	vim.cmd.colorscheme("rose-pine")
 end
 

@@ -60,6 +60,10 @@ vim.opt.timeoutlen = 1000
 vim.opt.showtabline = 2  -- (0 = never or 1 = when there are multiple tabs or 2 = always)
 vim.opt.tabline = ""  -- default tabline (empty string uses the default)
 
+-- statusline
+vim.opt.laststatus = 3  -- single global statusline instead of a separate one for each split
+vim.opt.showmode = false  -- prevents duplicate mode indicators
+
 -- neovim gui
 require("onncera.neovide")
 

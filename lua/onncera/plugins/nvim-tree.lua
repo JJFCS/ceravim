@@ -1,4 +1,9 @@
 
+--** TODO
+-- setup bindings
+--**
+
+
 vim.pack.add({
 	"https://github.com/nvim-tree/nvim-tree.lua",
 })
@@ -34,6 +39,7 @@ require("nvim-tree").setup({
 	}, on_attach = function(bufnr)
 		local api = require("nvim-tree.api")
 
+		-- @bindings
 		vim.keymap.set("n", "-", api.tree.change_root_to_parent, {
 			buffer = bufnr,
 			desc = "go to parent directory",
